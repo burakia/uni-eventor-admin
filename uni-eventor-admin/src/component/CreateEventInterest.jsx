@@ -1,27 +1,46 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
-
+import axios from 'axios';
+import * as AuthModule from '../App.Auth';
 
 class CreateEventInterest extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            Interests:[],
             InterestName : ''
         };
+           axios.get('http://unieventorapi.azurewebsites.net/api/EventInterestApi').then((response)=>{
+                this.setState({Interests:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
+
     }
 
     submitHandler(e) {
-        // alert(this.refs.txtInterestName.value);
         e.preventDefault();
-      
-        // Fill User Information from api 
+        console.log(this.state);
+
+        AuthModule.login('testuser', 'Cem.123', () => {
+                alert('Login Success');
+            }, (error) => {
+                alert('Login Error');
+            });
+       var newEventInterest  = {
+            InterestName : this.state.InterestName 
+       }
+        axios.post('http://unieventorapi.azurewebsites.net/api/EventInterestApi',newEventInterest).then((response)=>{
+           console.log(response);
+            alert('Etkinlik Alanı Eklendi');
+        }).catch((error)=>{console.log(error)})
+
+       
     }
 
     handleInterestNameChange(event) {
         var InterestName = event.target.value;
-        this.setState(prevState => ({
-            InterestName: InterestName 
-        }));
+        this.setState({InterestName: InterestName  });
         // alert(InterestName);
      }
 
@@ -48,6 +67,30 @@ class CreateEventInterest extends Component {
                         </div>
                     </div>
                      </form>
+                       <div className="w3-row ">
+                        <div className="w3-half">
+                        <table className="w3-table-all w3-hoverable" id="myTable">
+                            <thead>
+                            <tr className="w3-light-grey">
+                                <th>İlgi ID</th>
+                                <th>Etkinlik İlgi Alan Adı</th>
+                            </tr>
+                            </thead>
+                        
+                                {this.state.Interests.map((item)=>{
+                                    
+                                    return <tr>
+                                                <td>{item.InterestId}</td>
+                                                <td>{item.InterestName}</td>
+                                            
+                                            </tr>
+                                })}
+                            
+                            
+                            </table>
+                        </div>
+                        </div>
+                      
            </div>
        );
     }
