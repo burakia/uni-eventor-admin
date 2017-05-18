@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
+import axios from 'axios';
+import * as AuthModule from '../App.Auth';
 
 class CreateUserRole extends Component {
     constructor(props) {
@@ -12,7 +14,17 @@ class CreateUserRole extends Component {
 
     submitHandler(e) {
         e.preventDefault();
-     
+        AuthModule.login('testuser', 'Cem.123', () => {
+                alert('Login Success');
+            }, (error) => {
+                alert('Login Error');
+            });
+      console.log(this.state); 
+        axios.post('http://unieventorapi.azurewebsites.net/api/UserRoleApi',this.state).then((response)=>{
+           console.log(response);
+            alert('Kullanıcı Rolü Eklendi');
+        }).catch((error)=>{console.log(error)})
+
         // Fill User Information from api 
     }
 
