@@ -9,7 +9,6 @@ class CreateFaculty extends Component {
         super(props);
         this.state = {
             universities:[],
-            FacultyId: '',
             FacultyName: '',
             FacultyAddress: '',
             FkUniversityId:''
@@ -18,9 +17,12 @@ class CreateFaculty extends Component {
 
     submitHandler(e) {
         e.preventDefault(); 
-      
+       AuthModule.login('testuser', 'Cem.123', () => {
+                alert('Login Success');
+            }, (error) => {
+                alert('Login Error');
+            });
         var newFaculty = {
-             FacultyId: this.state.FacultyId,
             FacultyName: this.state.FacultyName,
             FacultyAddress: this.state.FacultyAddress,
             FkUniversityId:this.state.FkUniversityId
