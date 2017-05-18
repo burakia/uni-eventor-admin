@@ -18,9 +18,16 @@ class CreateFaculty extends Component {
 
     submitHandler(e) {
         e.preventDefault(); 
-        console.log(this.state);
-        
-        axios.post('http://unieventorapi.azurewebsites.net/api/FacultyApi',this.state).then((response)=>{
+      
+        var newFaculty = {
+             FacultyId: this.state.FacultyId,
+            FacultyName: this.state.FacultyName,
+            FacultyAddress: this.state.FacultyAddress,
+            FkUniversityId:this.state.FkUniversityId
+        }
+          console.log(newFaculty);
+        axios.post('http://unieventorapi.azurewebsites.net/api/FacultyApi',newFaculty).then((response)=>{
+           console.log(response);
             alert('Fakülte Eklendi');
         }).catch((error)=>{console.log(error)})
 
