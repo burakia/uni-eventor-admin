@@ -7,7 +7,6 @@ class CreateDepartment extends Component {
         this.state = {
             universities: [],
             faculties : [],
-            DepartmentId: '',
             DepartmentName: '',
             DepartmentAddress: '',
             FkFacultyId:''
@@ -16,6 +15,16 @@ class CreateDepartment extends Component {
     submitHandler(e) {
         e.preventDefault();
         console.log(this.state);// Doğru Geliyor.
+          var newDepartment = {
+            DepartmentName: this.state.DepartmentName,
+            DepartmentAddress: this.state.DepartmentAddress,
+            FkFacultyId:this.state.FkFacultyId
+        }
+          console.log(newDepartment);
+        axios.post('http://unieventorapi.azurewebsites.net/api/DepartmentApi',newDepartment).then((response)=>{
+           console.log(response);
+            alert('Fakülte Eklendi');
+        }).catch((error)=>{console.log(error)})
         alert('Bölüm Ekle');
         // Fill User Information from api 
     }
