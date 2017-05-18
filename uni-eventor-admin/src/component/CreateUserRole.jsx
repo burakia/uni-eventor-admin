@@ -13,7 +13,7 @@ class CreateUserRole extends Component {
 
     submitHandler(e) {
         e.preventDefault();
-       
+       debugger;
       console.log(this.state); 
         axios.post('http://unieventorapi.azurewebsites.net/api/UserRoleApi',this.state).then((response)=>{
            console.log(response);
@@ -56,7 +56,7 @@ class CreateUserRole extends Component {
                             </div>
                             <div className="w3-container w3-threequarter">
                                 <select className="w3-select w3-border w3-padding" name="option"  onChange={this.handleRoleNameChange.bind(this)} >
-                                <option value="" disabled selected>Role Seç</option>
+                                <option value="" disabled defaultValue>Role Seç</option>
                                 <option value="EVNT_SPR">EVNT_SPR</option>
                                 <option value="EVNT_USR">EVNT_USR</option>
                                 <option value="EVNT_CMYKL">EVNT_CMYKL</option>
