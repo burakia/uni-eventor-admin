@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
+import axios from 'axios';
+import * as AuthModule from '../App.Auth';
 
 class CreateEventType extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            Types : [],
             EventTypeName : ''
         };
+
+         axios.get('http://unieventorapi.azurewebsites.net/api/EventTypeApi').then((response)=>{
+                this.setState({Types:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
     }
 
     handleEventTypeNameChange(event) {
@@ -18,11 +27,22 @@ class CreateEventType extends Component {
      }
     submitHandler(e) {
         e.preventDefault();
-        // alert(this.refs.txtEventTypeName.value);
-      
-        
-        // Fill User Information from api 
-    }
+       
+        AuthModule.login('testuser', 'Cem.123', () => {
+            alert('Login Success');
+        }, (error) => {
+            alert('Login Error');
+        });
+
+         var newEventType ={
+            EventTypeName : this.state.EventTypeName
+        }
+
+        axios.post('http://unieventorapi.azurewebsites.net/api/EventTypeApi',newEventType).then((response)=>{
+           console.log(response);
+            alert('Etkinlik Tipi Eklendi');
+        }).catch((error)=>{console.log(error)})
+}
 
     render() {
        
@@ -44,6 +64,29 @@ class CreateEventType extends Component {
                         </div>
                     </div>
                     </form>
+                     <div className="w3-row w3-section">
+                        <div className="w3-container w3-half">
+                             <table className="w3-table-all w3-hoverable" id="myTable">
+                                <thead>
+                                <tr className="w3-light-grey">
+                                    <th>Tip ID</th>
+                                    <th>Etkinlik Tip Adı</th>
+                                </tr>
+                                </thead>
+                            
+                                    {this.state.Types.map((item)=>{
+                                        
+                                        return <tr>
+                                                    <td>{item.EventTypeId}</td>
+                                                    <td>{item.TypeName}</td>
+                                                
+                                                </tr>
+                                    })}
+                                
+                                
+                                </table>
+                        </div>
+                    </div>
            </div>
        );
     }
