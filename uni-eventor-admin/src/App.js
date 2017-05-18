@@ -7,12 +7,21 @@ import './css/font-awesome.min.css'
 class App extends Component {
     
     logout() {
-        AuthModule.setToken('');
+        AuthModule.setToken(''); //bakılması gerek token null atanmıyor logoutta 
     }
 
     getAccountLink() {
-        if (AuthModule.getToken().access_token)
+        if(AuthModule.getToken().access_token==='') //lanet bolgeye girmiyor hiç
         {
+             console.log('logout bolgesi lanet bolgeye girmiyor');
+            return {
+                linkText: '',
+                to: '/'
+            };
+        }
+       else if (AuthModule.getToken().access_token)
+        {
+            console.log('giriş yapıldı bolgesi');
             return {
                 linkText: AuthModule.getToken().userName,
                 to: '/' + AuthModule.getToken().userName

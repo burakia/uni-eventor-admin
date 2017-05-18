@@ -1,7 +1,7 @@
 import { makeApiRequest } from './App.Request';
 import axios from 'axios';
 
-let token = null;
+let token = '';
 
 export function setToken(tkn){
     token = tkn;
