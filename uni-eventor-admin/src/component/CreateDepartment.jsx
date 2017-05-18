@@ -34,6 +34,15 @@ class CreateDepartment extends Component {
 
     }
 
+    handleUniversityIdChange(event) {
+        
+        var UniversityId = event.target.value;
+         axios.get('http://unieventorapi.azurewebsites.net/api/FacultyApi?UniId='+UniversityId).then((response)=>{
+                this.setState({faculties:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
+    }
     handleDepartmentNameChange(event) {
         var DepartmentName = event.target.value;
         this.setState({DepartmentName});
@@ -59,7 +68,7 @@ class CreateDepartment extends Component {
              <h2>Bölüm Tanımlama</h2>
              <div className="w3-row w3-section">
                 <div className="w3-half w3-container">
-                    <select className="w3-select w3-border w3-padding" name="option" >
+                    <select className="w3-select w3-border w3-padding" name="option"  onChange={this.handleUniversityIdChange.bind(this)}>
                         <option value="" disabled selected>Üniversite Seç</option>
                        {this.state.universities.map((item)=>{
                             return <option key={item.UniversityId} value={item.UniversityId}>{item.UniversityName}</option>
