@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
-
+import axios from 'axios';
 class CreateDepartment extends Component {
      constructor(props) {
         super(props);
         this.state = {
+            universities: [],
+            faculties : [],
             DepartmentId: '',
             DepartmentName: '',
             DepartmentAddress: '',
@@ -13,36 +15,36 @@ class CreateDepartment extends Component {
     }
     submitHandler(e) {
         e.preventDefault();
+        console.log(this.state);// Doğru Geliyor.
         alert('Bölüm Ekle');
         // Fill User Information from api 
+    }
+     componentDidMount() {
+
+            axios.get('http://unieventorapi.azurewebsites.net/api/UniversityApi').then((response)=>{
+                this.setState({universities:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
+            axios.get('http://unieventorapi.azurewebsites.net/api/FacultyApi').then((response)=>{
+                this.setState({faculties:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
+
     }
 
     handleDepartmentNameChange(event) {
         var DepartmentName = event.target.value;
-        this.setState(prevState => ({
-            DepartmentId : prevState.DepartmentId,
-            DepartmentName: DepartmentName,
-            DepartmentAddress:prevState.Address,
-            FkFacultyId:prevState.Website
-        }));
+        this.setState({DepartmentName});
     }
     handleDepartmentAddressChange(event) {
         var DepartmentAddress = event.target.value;
-        this.setState(prevState => ({
-             DepartmentId : prevState.DepartmentId,
-            DepartmentName: prevState.DepartmentName,
-            DepartmentAddress:DepartmentAddress,
-            FkFacultyId:prevState.Website
-        }));
+        this.setState({DepartmentAddress});
     }
     handleFkFacultyIdChange(event) {
         var FkFacultyId = event.target.value;
-        this.setState(prevState => ({
-            DepartmentId : prevState.DepartmentId,
-            DepartmentName: prevState.DepartmentName,
-            DepartmentAddress:prevState.DepartmentAddress,
-            FkFacultyId:FkFacultyId
-        }));
+        this.setState({FkFacultyId});
     }
 
 
@@ -59,8 +61,9 @@ class CreateDepartment extends Component {
                 <div className="w3-half w3-container">
                     <select className="w3-select w3-border w3-padding" name="option" >
                         <option value="" disabled selected>Üniversite Seç</option>
-                        <option value="SAU54">SAU - Sakarya Üniversitesi</option>
-                        <option value="KOU41">KOU - Kocaeli Üniversitesi</option>
+                       {this.state.universities.map((item)=>{
+                            return <option key={item.UniversityId} value={item.UniversityId}>{item.UniversityName}</option>
+                        })}
                     </select>
                 </div>
             </div>
@@ -68,8 +71,9 @@ class CreateDepartment extends Component {
                 <div className="w3-container w3-half">
                     <select className="w3-select w3-border w3-padding" name="option" onChange={this.handleFkFacultyIdChange.bind(this)}>
                         <option value="" disabled selected>Fakülte Seç</option>
-                        <option value="BBF">BBF - Bilgisayar ve Bilişim Bilimleri Fakültesi</option>
-                        <option value="MF">MF - Mühendislik Fakültesi</option>
+                          {this.state.faculties.map((item)=>{
+                            return <option key={item.FacultyId} value={item.FacultyId}>{item.FkUniversityId} - {item.FacultyName}</option>
+                        })}
                     </select>
                 </div>
             </div>

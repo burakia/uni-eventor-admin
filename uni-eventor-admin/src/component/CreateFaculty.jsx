@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
 import axios from 'axios';
+import * as AuthModule from '../App.Auth';
 
 
 class CreateFaculty extends Component {
@@ -16,37 +17,28 @@ class CreateFaculty extends Component {
     }
 
     submitHandler(e) {
-        e.preventDefault();
-        alert('Fakülte Ekleme');
+        e.preventDefault(); 
+        console.log(this.state);
+        
+        axios.post('http://unieventorapi.azurewebsites.net/api/FacultyApi',this.state).then((response)=>{
+            alert('Fakülte Eklendi');
+        }).catch((error)=>{console.log(error)})
+
+        
         // Fill User Information from api 
     }
 
     handleFacultyNameChange(event) {
         var FacultyName = event.target.value;
-        this.setState(prevState => ({
-            FacultyId : prevState.FacultyId,
-            FacultyName: FacultyName,
-            FacultyAddress:prevState.Address,
-            FkUniversityId:prevState.Website
-        }));
+        this.setState({FacultyName});
     }
     handleFacultyAddressChange(event) {
         var FacultyAddress = event.target.value;
-        this.setState(prevState => ({
-            FacultyId : prevState.FacultyId,
-            FacultyName: prevState.FacultyName,
-            FacultyAddress:FacultyAddress,
-            FkUniversityId:prevState.Website
-        }));
+        this.setState({FacultyAddress});
     }
     handleUniversityIdChange(event) {
         var UniversityId = event.target.value;
-        this.setState(prevState => ({
-            FacultyId : prevState.FacultyId,
-            FacultyName: prevState.FacultyName,
-            FacultyAddress:prevState.Address,
-            FkUniversityId:UniversityId
-        }));
+        this.setState({FkUniversityId:UniversityId});
         
     }
 

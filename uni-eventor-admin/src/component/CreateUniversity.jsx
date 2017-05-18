@@ -6,23 +6,28 @@ class CreateUniversity extends Component {
      constructor(props) {
         super(props);
         this.state = {
+            universities:[],
             UniversityId: '',
             UniversityName: '',
             Address: '',
             Website:''
         };
+         axios.get('http://unieventorapi.azurewebsites.net/api/UniversityApi').then((response)=>{
+                this.setState({universities:response.data});
+            }).catch((error)=>{
+                console.log(error);
+            });
     }
 
     submitHandler(e) {
         e.preventDefault();
         
         console.log(this.state);
+       
         axios.post('http://unieventorapi.azurewebsites.net/api/UniversityApi',this.state).then((response)=>{
             alert('Universite Eklendi');
         }).catch((error)=>{console.log(error)})
 
-        
-        // Fill User Information from api 
     }
 
     handleIdChange(event) {
@@ -44,7 +49,7 @@ class CreateUniversity extends Component {
         
     }
 
-      handleAddressChange(event) {
+     handleAddressChange(event) {
         var UniversityAddress = event.target.value;
         this.setState({Address:UniversityAddress});
        
@@ -55,7 +60,7 @@ class CreateUniversity extends Component {
        }
        return (
            <div>
-                 <form className="w3-text-blue-gray" onSubmit={this.submitHandler.bind(this)}>
+            <form className="w3-text-blue-gray" onSubmit={this.submitHandler.bind(this)}>
 
                <h2>Üniversite Tanımlama</h2>
                 <div className="w3-row w3-section">
@@ -105,27 +110,19 @@ class CreateUniversity extends Component {
                         <th>Düzenle</th>
                     </tr>
                     </thead>
-                    <tr>
-                    <td>Jill</td>
-                    <td>Smith</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>Düzenle</td>
-                    </tr>
-                    <tr>
-                    <td>Eve</td>
-                    <td>Jackson</td>
-                    <td>94</td>
-                    <td>50</td>
-                    <td>Düzenle</td>
-                    </tr>
-                    <tr>
-                    <td>Adam</td>
-                    <td>Johnson</td>
-                    <td>67</td>
-                    <td>50</td>
-                    <td>Düzenle</td>
-                    </tr>
+                   
+                        {this.state.universities.map((item)=>{
+                             
+                            return <tr>
+                                        <td>{item.UniversityId}</td>
+                                        <td>{item.UniversityName}</td>
+                                        <td>{item.Website}</td>
+                                        <td>{item.Address}</td>
+                                        <td>Düzenle</td>
+                                    </tr>
+                        })}
+                    
+                    
              </table>
            </div>
        );
