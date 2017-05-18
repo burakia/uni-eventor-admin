@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
 import axios from 'axios';
-import * as AuthModule from '../App.Auth';
 
 class CreateEventInterest extends Component {
     constructor(props) {
@@ -22,11 +21,6 @@ class CreateEventInterest extends Component {
         e.preventDefault();
         console.log(this.state);
 
-        AuthModule.login('testuser', 'Cem.123', () => {
-                alert('Login Success');
-            }, (error) => {
-                alert('Login Error');
-            });
        var newEventInterest  = {
             InterestName : this.state.InterestName 
        }
@@ -70,24 +64,24 @@ class CreateEventInterest extends Component {
                        <div className="w3-row ">
                         <div className="w3-half">
                         <table className="w3-table-all w3-hoverable" id="myTable">
-                            <thead>
-                            <tr className="w3-light-grey">
-                                <th>İlgi ID</th>
-                                <th>Etkinlik İlgi Alan Adı</th>
-                            </tr>
-                            </thead>
+                        <thead>
+                        <tr className="w3-light-grey">
+                            <th>İlgi ID</th>
+                            <th>Etkinlik İlgi Alan Adı</th>
+                        </tr>
+                        </thead>
+                    
+                            {this.state.Interests.map((item)=>{
+                                
+                                return <tr>
+                                            <td>{item.InterestId}</td>
+                                            <td>{item.InterestName}</td>
+                                        
+                                        </tr>
+                            })}
                         
-                                {this.state.Interests.map((item)=>{
-                                    
-                                    return <tr>
-                                                <td>{item.InterestId}</td>
-                                                <td>{item.InterestName}</td>
-                                            
-                                            </tr>
-                                })}
-                            
-                            
-                            </table>
+                        
+                        </table>
                         </div>
                         </div>
                       

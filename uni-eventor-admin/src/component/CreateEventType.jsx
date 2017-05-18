@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
 import axios from 'axios';
-import * as AuthModule from '../App.Auth';
 
 class CreateEventType extends Component {
     constructor(props) {
@@ -28,12 +27,6 @@ class CreateEventType extends Component {
     submitHandler(e) {
         e.preventDefault();
        
-        AuthModule.login('testuser', 'Cem.123', () => {
-            alert('Login Success');
-        }, (error) => {
-            alert('Login Error');
-        });
-
          var newEventType ={
             EventTypeName : this.state.EventTypeName
         }
