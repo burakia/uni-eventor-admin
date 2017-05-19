@@ -53,7 +53,7 @@ class CreateEvent extends Component {
     handleInterestIdsChange(event) {
         var InterestIds = event.target.value;
         this.setState({ InterestIds });
-
+        console.log(InterestIds);
     }
     handleContentChange(event) {
         var Content = event.target.value;
@@ -73,6 +73,22 @@ class CreateEvent extends Component {
 
         alert('Etkinlik Oluşturuldu');
     }
+   
+     _handleImageChange(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    
+    reader.onloadend = () => {
+         this.setState({
+            file: file,
+            imagePreviewUrl: reader.result
+      });
+    }
+    
+    reader.readAsDataURL(file);
+}
 
     componentDidMount() {
 
@@ -90,14 +106,24 @@ class CreateEvent extends Component {
 
     }
     render() {
-
+   
         var resizenone = {
             resize: 'none'
         };
         var width100 = {
             width: '100%'
         };
-
+        var poster ={
+            width:'240px' , 
+            height:'340px'
+        }
+        let {imagePreviewUrl} = this.state;
+        let $imagePreview = null;
+        if (imagePreviewUrl) {
+        $imagePreview = (<img className="w3-hover-opacity" alt="Person" style={poster} src={imagePreviewUrl}  />);
+        } else {
+        $imagePreview = (<div className="previewText w3-card-4" >Lütfen etkinlik için Poster seçiniz</div>);
+        }
         return (
             <div>
                 <form className="w3-text-blue-gray" onSubmit={this.submitHandler.bind(this)}>
@@ -150,7 +176,7 @@ class CreateEvent extends Component {
                         </div>
                         <div className="w3-row w3-section">
                             <div className="w3-container ">
-                                <select className="w3-select w3-border w3-padding" name="option" onChange={this.handleInterestIdsChange.bind(this)}>
+                                <select className="w3-select w3-border w3-padding" name="option" onChange={this.handleInterestIdsChange.bind(this)} multiple>
                                     <option value="" disabled selected>Etkinlik İlgi Alanı Seç</option>
                                     {this.state.EventInterests.map((item) => {
                                         return <option key={item.InterestIds} value={item.InterestIds}>{item.InterestName}</option>
@@ -178,7 +204,7 @@ class CreateEvent extends Component {
                         </div>
                         <div className="w3-row w3-section">
                             <div className="w3-container">
-                                <input type="file" id="file" />
+                                <input type="file" id="file" onChange={(e)=>this._handleImageChange(e)}/>
 
                             </div>
                         </div>
@@ -192,7 +218,7 @@ class CreateEvent extends Component {
                     </div>
                     <div className="w3-quarter">
                         <div className="w3-card-4 test " style={width100}>
-                            <img src="http://comp.eng.ankara.edu.tr/files/2014/03/intro.jpg" className="w3-hover-opacity" alt="Person" style={width100} />
+                            {$imagePreview}
                             <div className="w3-container">
                                 <h4><b>Etkinlik Resmi</b></h4>
 
