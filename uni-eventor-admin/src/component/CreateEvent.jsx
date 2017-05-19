@@ -122,7 +122,7 @@ class CreateEvent extends Component {
         if (imagePreviewUrl) {
         $imagePreview = (<img className="w3-hover-opacity" alt="Person" style={poster} src={imagePreviewUrl}  />);
         } else {
-        $imagePreview = (<div className="previewText w3-card-4" >Lütfen etkinlik için Poster seçiniz</div>);
+        $imagePreview = (<div className="" >Lütfen etkinlik için Poster seçiniz</div>);
         }
         return (
             <div>
