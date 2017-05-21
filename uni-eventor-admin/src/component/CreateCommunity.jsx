@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/w3.css';
 import axios from 'axios';
+import * as AuthModule from '../App.Auth';
 
 class CreateCommunity extends Component {
       constructor(props) {
@@ -11,17 +12,55 @@ class CreateCommunity extends Component {
             DateCreated: '',
             LastUpdated:'' , 
             FkCreatorId : '', 
-            FkResponsibleId : ''
+            FkResponsibleId : '' , 
+            infos :{
+                AttendingEvents : [] , 
+                Communities : [] , 
+                DateJoined : '' , 
+                Department : [] , 
+                Email : '' , 
+                EmailConfirmed : '' ,
+                FkDepartment : '' ,
+                FkUserPhoto :'' ,
+                Id : '' ,
+                Interests :[] , 
+                Name :'' ,
+                Roles :[], 
+                Surname : '' ,
+                UniResponsibilities: [] ,
+                UserName : '' ,
+                UserPhoto :[]  
+            }
         };
+      AuthModule.login('testuser', 'Cem.123', () => {
+            }, (error) => {
+                this.setState(prevState => ({
+                    username: prevState.username,
+                    password: prevState.password,
+                    error: 'User doesn\'t exist or username and password does not match'
+                }));
+            });
+         axios.get('http://unieventorapi.azurewebsites.net/api/Account/UserInfo').then((response) => {
+             debugger;
+            this.setState({ infos: response.data });
+        }).catch((error) => {
+            console.log(error);
+        });
+      
         
     }
     submitHandler(e) {
       e.preventDefault();   
-       
-     
       
-      console.log(this.state);
-        axios.post('http://unieventorapi.azurewebsites.net/api/CommunityApi',this.state).then((response)=>{
+      var newCommunity = {
+            CommunityName: this.state.CommunityName,
+            DateCreated: '2017-05-20 14:50:06.627',
+            LastUpdated:'2017-05-20 14:50:06.627' , 
+            FkCreatorId : this.state.infos.Id, 
+            FkResponsibleId : this.state.infos.Id
+      }
+      console.log(newCommunity);
+        axios.post('http://unieventorapi.azurewebsites.net/api/CommunityApi',newCommunity).then((response)=>{
            console.log(response);
             alert('Topluluk Eklendi');
         }).catch((error)=>{console.log(error)})

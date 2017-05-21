@@ -3,7 +3,11 @@ import '../css/w3.css';
 import UserInformation from '../component/UserInformation.jsx'
 import UserInterests from '../component/UserInterests.jsx'
 import JoinedEvents from '../component/JoinedEvents.jsx'
+import axios from 'axios';
+import * as AuthModule from '../App.Auth';
+
 class Settings extends Component {
+   
     handleClick = (e, cityName) => {
         // e burada click icin bildigimiz event nesnesi
         var i, x, tablinks;
@@ -19,6 +23,7 @@ class Settings extends Component {
         e.currentTarget.firstElementChild.className += " w3-border-red";
 
     }
+    
     render() {
        var displaynone ={
            display : 'none'
