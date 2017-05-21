@@ -35,7 +35,6 @@ class UserInformation extends Component {
             DepartmentId:'' ,
             FkUserPhoto : '' ,
             ContentPostModel :{
-                ContentId :'' ,
                 FileName :'' ,
                 Base64Data :'' ,
                 FkContentTypeId :'' 
@@ -81,10 +80,11 @@ class UserInformation extends Component {
     }
     submitHandler(e) {
         e.preventDefault();
-    //    console.log(this.state.ContentPostModel);
-        // axios.post('http://unieventorapi.azurewebsites.net/api/ContentApi',this.state.ContentPostModel).then((response)=>{
-        //     alert('Foto Güncellendi');
-        // }).catch((error)=>{console.log(error)})
+      
+       console.log(this.state.ContentPostModel);
+        axios.post('http://unieventorapi.azurewebsites.net/api/ContentApi',this.state.ContentPostModel).then((response)=>{
+            alert('Foto Güncellendi');
+        }).catch((error)=>{console.log(error)})
        
         var UpdatedInformations = {
                 UserName : this.state.infos.UserName , 
@@ -140,7 +140,6 @@ class UserInformation extends Component {
         
         reader.onloadend = () => {
              var  ContentPostModel ={
-                ContentId :'' ,
                 FileName :file.name ,
                 Base64Data : reader.result ,
                 FkContentTypeId : 2 

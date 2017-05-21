@@ -27,13 +27,10 @@ class CreateEvent extends Component {
         };
     }
 
-
-
     handleEventNameChange(event) {
         var EventName = event.target.value;
         this.setState({ EventName });
     }
-
 
     handleEventStartDateChange(event) {
         var EventStartDate = event.target.value;
@@ -147,6 +144,10 @@ class CreateEvent extends Component {
             width: '240px',
             height: '340px'
         }
+        var mapstyle={
+            width:'1100',
+            height:'300'
+        }
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
@@ -156,6 +157,7 @@ class CreateEvent extends Component {
         }
         return (
             <div>
+                
                 <form className="w3-text-blue-gray" onSubmit={this.submitHandler.bind(this)}>
 
                     <h2>Etkinlik Tanımlama</h2>
@@ -256,7 +258,9 @@ class CreateEvent extends Component {
                         </div>
                     </div>
                     <div className="w3-row">
-                <Map width="1100" height="300" lang="40.7413232" long="30.3296314" />
+                        <div id="map" style={mapstyle}>
+
+                        </div>
                     </div>
                 </form>
             </div>
