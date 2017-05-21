@@ -32,14 +32,6 @@ class CreateCommunity extends Component {
                 UserPhoto :[]  
             }
         };
-      AuthModule.login('testuser', 'Cem.123', () => {
-            }, (error) => {
-                this.setState(prevState => ({
-                    username: prevState.username,
-                    password: prevState.password,
-                    error: 'User doesn\'t exist or username and password does not match'
-                }));
-            });
          axios.get('http://unieventorapi.azurewebsites.net/api/Account/UserInfo').then((response) => {
              debugger;
             this.setState({ infos: response.data });
@@ -51,13 +43,11 @@ class CreateCommunity extends Component {
     }
     submitHandler(e) {
       e.preventDefault();   
-      
+       
       var newCommunity = {
             CommunityName: this.state.CommunityName,
-            DateCreated: '2017-05-20 14:50:06.627',
-            LastUpdated:'2017-05-20 14:50:06.627' , 
-            FkCreatorId : this.state.infos.Id, 
-            FkResponsibleId : this.state.infos.Id
+            FkCreatorId : this.state.infos.UserName, 
+            FkResponsibleId : this.state.FkResponsibleId
       }
       console.log(newCommunity);
         axios.post('http://unieventorapi.azurewebsites.net/api/CommunityApi',newCommunity).then((response)=>{
