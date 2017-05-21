@@ -13,18 +13,21 @@ class CreateEvent extends Component {
             EventStartDate: '',
             EventEndDate: '',
             MaxSeats: '',
-            Latitude: '',
-            Longitude: '',
+            Latitude: 40,
+            Longitude: 30,
             Address: '',
             Content: '',
-            CommunityIds: '',
-            InterestIds: '',
-            FileName: '',
-            Base64Data: '',
-            FkEventTypeId: '',
-
+            CommunityId: '1',
+            InterestId: '',
+           // FileName: '',
+           // Base64Data: '',
+            FkEventTypeId: 1,
+            imagePreviewUrl: '',
+            file: ''
         };
     }
+
+
 
     handleEventNameChange(event) {
         var EventName = event.target.value;
@@ -51,44 +54,70 @@ class CreateEvent extends Component {
 
     }
     handleInterestIdsChange(event) {
-        var InterestIds = event.target.value;
-        this.setState({ InterestIds });
-        console.log(InterestIds);
+        var InterestId = event.target.value;
+        this.setState({ InterestId });
+        console.log(InterestId);
     }
     handleContentChange(event) {
         var Content = event.target.value;
         this.setState({ Content });
     }
-      handleAddressChange(event) {
+    handleAddressChange(event) {
         var Address = event.target.value;
         this.setState({ Address });
     }
-     handleLocationNameChange(event) {
+    handleLocationNameChange(event) {
         var LocationName = event.target.value;
         this.setState({ LocationName });
     }
 
+    _handleImageChange(e) {
+        e.preventDefault();
+
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                file: file,
+                imagePreviewUrl: reader.result
+            });
+        }
+
+        reader.readAsDataURL(file);
+    }
     submitHandler(e) {
         e.preventDefault();
+        var newEvent = {
+            EventName: this.state.EventName,
+            EventStartDate: this.state.EventStartDate,
+            EventEndDate: this.state.EventEndDate,
+            MaxSeats: this.state.MaxSeats,
+            FkEventTypeId: 1, //this.state.FkEventTypeId,
+            InterestId: this.state.InterestId,
+            Content: this.state.Content,
+            LocationName: this.state.LocationName,
+            Address: this.state.Address,
+            Latitude: 40, // this.state.Latitude,
+            Longitude:  30,//this.state.Longitude,
+            CommunityId: this.state.CommunityId,
+            //Base64Data: this.state.Base64Data,
+            //FileName: this.state.FileName,
+            file:this.state.file.name,
+            Base64Data:this.state.imagePreviewUrl,
+        }
+
+        console.log(this.state);
+        axios.post('http://unieventorapi.azurewebsites.net/api/EventApi', newEvent).then((response) => {
+            console.log(response);
+            alert('Etkinlik Eklendi');
+        }).catch((error) => { console.log(error) })
 
         alert('Etkinlik Oluşturuldu');
     }
-   
-     _handleImageChange(e) {
-    e.preventDefault();
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    
-    reader.onloadend = () => {
-         this.setState({
-            file: file,
-            imagePreviewUrl: reader.result
-      });
-    }
-    
-    reader.readAsDataURL(file);
-}
+
 
     componentDidMount() {
 
@@ -105,24 +134,25 @@ class CreateEvent extends Component {
         });
 
     }
+ 
     render() {
-   
+
         var resizenone = {
             resize: 'none'
         };
         var width100 = {
             width: '100%'
         };
-        var poster ={
-            width:'240px' , 
-            height:'340px'
+        var poster = {
+            width: '240px',
+            height: '340px'
         }
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
-        $imagePreview = (<img className="w3-hover-opacity" alt="Person" style={poster} src={imagePreviewUrl}  />);
+            $imagePreview = (<img className="w3-hover-opacity" alt="Person" style={poster} src={imagePreviewUrl} />);
         } else {
-        $imagePreview = (<div className="" >Lütfen etkinlik için Poster seçiniz</div>);
+            $imagePreview = (<div className="" >Lütfen etkinlik için Poster seçiniz</div>);
         }
         return (
             <div>
@@ -160,7 +190,7 @@ class CreateEvent extends Component {
 
                             <div className="w3-container w3-half">
                                 <label><i className="fa fa-child"></i>Kişi</label>
-                                <input className="w3-input w3-border" type="number" max="5000" onChange={this.handleMaxSeatsChange.bind(this)} name="Kids" />
+                                <input className="w3-input w3-border" type="number" min="1" max="5000" onChange={this.handleMaxSeatsChange.bind(this)} name="Kids" />
 
                             </div>
                             <div className="w3-container w3-half">
@@ -179,7 +209,7 @@ class CreateEvent extends Component {
                                 <select className="w3-select w3-border w3-padding" name="option" onChange={this.handleInterestIdsChange.bind(this)} multiple>
                                     <option value="" disabled selected>Etkinlik İlgi Alanı Seç</option>
                                     {this.state.EventInterests.map((item) => {
-                                        return <option key={item.InterestIds} value={item.InterestIds}>{item.InterestName}</option>
+                                        return <option key={item.InterestId} value={item.InterestId}>{item.InterestName}</option>
                                     })}
                                 </select>
                             </div>
@@ -204,7 +234,7 @@ class CreateEvent extends Component {
                         </div>
                         <div className="w3-row w3-section">
                             <div className="w3-container">
-                                <input type="file" id="file" onChange={(e)=>this._handleImageChange(e)}/>
+                                <input type="file" id="file" onChange={(e) => this._handleImageChange(e)} />
 
                             </div>
                         </div>
@@ -226,7 +256,7 @@ class CreateEvent extends Component {
                         </div>
                     </div>
                     <div className="w3-row">
-                        <Map width="1100" height="300" lang="40.7413232" long="30.3296314" />
+                <Map width="1100" height="300" lang="40.7413232" long="30.3296314" />
                     </div>
                 </form>
             </div>
