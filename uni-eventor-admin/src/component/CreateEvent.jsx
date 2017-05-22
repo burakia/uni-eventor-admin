@@ -76,6 +76,8 @@ class CreateEvent extends Component {
         let file = e.target.files[0];
 
         reader.onloadend = () => {
+            console.log(reader);
+            console.log(file);
             this.setState({
                 file: file,
                 imagePreviewUrl: reader.result
@@ -86,26 +88,26 @@ class CreateEvent extends Component {
     }
     submitHandler(e) {
         e.preventDefault();
+    
         var newEvent = {
             EventName: this.state.EventName,
             EventStartDate: this.state.EventStartDate,
             EventEndDate: this.state.EventEndDate,
             MaxSeats: this.state.MaxSeats,
-            FkEventTypeId: 1, //this.state.FkEventTypeId,
-            InterestId: this.state.InterestId,
-            Content: this.state.Content,
             LocationName: this.state.LocationName,
+            Latitude: "40", // this.state.Latitude,
+            Longitude:  "30",//this.state.Longitude,
             Address: this.state.Address,
-            Latitude: 40, // this.state.Latitude,
-            Longitude:  30,//this.state.Longitude,
-            CommunityId: this.state.CommunityId,
-            //Base64Data: this.state.Base64Data,
-            //FileName: this.state.FileName,
-            file:this.state.file.name,
-            Base64Data:this.state.imagePreviewUrl,
+            Content: this.state.Content,
+            CommunityId: [this.state.CommunityId],
+            InterestIds: [this.state.InterestId],
+            FileName:this.state.file.name,
+            Base64Data:'VmlraXBlZGk=',
+            FkEventTypeId: 1, //this.state.FkEventTypeId,
+            FkPosterId:1
         }
 
-        console.log(this.state);
+        console.log(newEvent);
         axios.post('http://unieventorapi.azurewebsites.net/api/EventApi', newEvent).then((response) => {
             console.log(response);
             alert('Etkinlik Eklendi');
